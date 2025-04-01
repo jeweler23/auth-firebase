@@ -1,6 +1,9 @@
-{"compilerOptions": {
+{
+  "compilerOptions": {
  "noEmit": true,
-
+    "paths": {
+      "@/*": ["src/*"]
+    },
 "module": "ESNext",
 
 

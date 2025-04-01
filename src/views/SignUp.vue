@@ -1,11 +1,11 @@
 <template>
-
+<h1>SignUp</h1>
 <n-form ref="formRef" :model="modelRef" :rules="rules">
 <n-form-item path="email" label="Email" >
   <n-icon size="32">
     <UserAvatar />
   </n-icon>
-  <n-input v-model:value="modelRef.email" @keydown.enter.prevent />
+  <n-input  v-model:value="modelRef.email" @keydown.enter.prevent />
 </n-form-item>
 <n-form-item path="password" label="Password">
   <n-icon size="32">
@@ -14,7 +14,6 @@
   <n-input
     v-model:value="modelRef.password"
     type="password"
-    @input="handlePasswordInput"
     @keydown.enter.prevent
   />
 </n-form-item>
@@ -68,8 +67,10 @@ import {NInput,NFormItem,NButton,NCol,NRow,NForm,NIcon} from 'naive-ui'
 import {UserAvatar,Password} from '@vicons/carbon'
 import {type ModelType} from "@/types";
 import {useAuthStore} from "@/stores/auth.ts";
+import {useRouter} from "vue-router";
 
 const authStore = useAuthStore()
+const router = useRouter()
 
 const formRef = ref<FormInst | null>(null)
     const rPasswordFormItemRef = ref<FormItemInst | null>(null)
@@ -89,6 +90,7 @@ const formRef = ref<FormInst | null>(null)
         && modelRef.value.password.length >= value.length
       )
     }
+
     function validatePasswordSame(rule: FormItemRule, value: string): boolean {
       return value === modelRef.value.password
     }
@@ -112,7 +114,21 @@ const formRef = ref<FormInst | null>(null)
       password: [
         {
           required: true,
-          message: 'Password is required'
+          validator(rule: FormItemRule, value: string) {
+            if (!value.length) {
+              return new Error('Password is required')
+            }
+
+            else if (value.length < 6) {
+              return new Error('Password length should be above 6')
+            }
+
+            if (modelRef.value.reenteredPassword) {
+              rPasswordFormItemRef.value?.validate({ trigger: 'password-input' })
+            }
+            return true
+          },
+          trigger: ['input', 'blur'],
         }
       ],
       reenteredPassword: [
@@ -134,12 +150,7 @@ const formRef = ref<FormInst | null>(null)
       ]
     }
 
-    const  handlePasswordInput =()=> {
-        if (modelRef.value.reenteredPassword) {
-          rPasswordFormItemRef.value?.validate({ trigger: 'password-input' })
-        }
-      }
-     const  handleValidateButtonClick = (e: MouseEvent)=> {
+    const  handleValidateButtonClick = async (e: MouseEvent)=> {
         e.preventDefault()
         formRef.value?.validate(
           (errors: Array<FormValidationError> | undefined) => {
@@ -153,7 +164,11 @@ const formRef = ref<FormInst | null>(null)
           }
         )
         const {email, password} = modelRef.value
-       authStore.signUp({ email, password } )
+       const user = await authStore.auth({ email, password },'signUp' )
+       if (user?.token) {
+        await router.push('/signin')
+       }
+       console.log(user)
       }
 
 </script>
