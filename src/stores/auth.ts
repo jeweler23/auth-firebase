@@ -2,6 +2,8 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import axios from 'axios'
 import { type CredentialsUser} from '@/types'
+import { message } from '@/utils/naive-ui-discrete-api.ts'
+
 
 interface IUserDTO {
   token: string,
@@ -21,9 +23,9 @@ export const useAuthStore = defineStore('auth', () => {
     expiresIn: null,
   })
 
-  const signUp = async (payload:CredentialsUser): Promise<void> => {
+  const auth = async (payload:CredentialsUser,type:'signUp'|'signInWithPassword'): Promise<void> => {
     try{
-      const response:IUserDTO = await axios.post(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${import.meta.env.VITE_API_KEY}`, {
+      const response:IUserDTO = await axios.post(`https://identitytoolkit.googleapis.com/v1/accounts:${type}?key=${import.meta.env.VITE_API_KEY}`, {
         ...payload,
         returnSecureToken:true
       })
@@ -34,13 +36,13 @@ export const useAuthStore = defineStore('auth', () => {
         refreshToken: response.data.refreshToken,
         expiresIn: response.data.expiresIn,
       }
-    if (response.response.status === 400) {
-
-    }
-      console.log(response.response.status)
+      message.success(
+        'Cause you walked hand in hand With another man in my place'
+      )
+      return userInfo.value
     }catch(error){
       console.log(error)
     }
   }
-  return {signUp}
+  return { auth }
 })

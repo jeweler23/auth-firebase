@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterView } from 'vue-router'
 import {NMessageProvider,NDialogProvider,NModalProvider,NNotificationProvider,NLoadingBarProvider} from 'naive-ui'
+
 </script>
 
 <template>
