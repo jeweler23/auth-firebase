@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import SignUp  from "@/views/SignUp.vue";
-import { useRouter, onBeforeRouteUpdate, onBeforeRouteLeave } from 'vue-router';
+// import { useRouter, onBeforeRouteUpdate, onBeforeRouteLeave } from 'vue-router';
 
-const routerVue = useRouter();
+// const routerVue = useRouter();
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -30,13 +30,13 @@ const router = createRouter({
   ],
 })
 
-onBeforeRouteUpdate((to, from, next) => {
-  if (!routerVue.hasRoute(to.name)) {
-    next({ name: 'NotFound' });
-  } else {
-    next();
-  }
-});
+// onBeforeRouteUpdate((to, from, next) => {
+//   if (!routerVue.hasRoute(to.name)) {
+//     next({ name: 'NotFound' });
+//   } else {
+//     next();
+//   }
+// });
 
 
 

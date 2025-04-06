@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import {NMessageProvider,NDialogProvider,NModalProvider,NNotificationProvider,NLoadingBarProvider} from 'naive-ui'
+import {NMessageProvider,NDialogProvider,NModalProvider,NNotificationProvider,NLoadingBarProvider } from 'naive-ui'
+import AuthWrapper from "@/wrapper/AuthWrapper.vue";
 
 </script>
 
@@ -10,7 +11,11 @@ import {NMessageProvider,NDialogProvider,NModalProvider,NNotificationProvider,NL
       <n-notification-provider>
         <n-modal-provider>
           <n-dialog-provider>
-            <RouterView />
+            <router-view v-slot="{ Component }">
+              <AuthWrapper>
+                <component :is="Component" />
+              </AuthWrapper>
+            </router-view>
           </n-dialog-provider>
         </n-modal-provider>
       </n-notification-provider>
