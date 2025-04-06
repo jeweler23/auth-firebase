@@ -4,19 +4,10 @@ import {NMessageProvider,NDialogProvider,NModalProvider,NNotificationProvider,NL
 import AuthWrapper from "@/wrapper/AuthWrapper.vue";
 
 
-import { toast, type ToastOptions } from 'vue3-toastify';
 
-const notify = () => {
-  toast("Wow so easy !", {
-    autoClose: 1000,
-    position: toast.POSITION.BOTTOM_RIGHT,
-  } as ToastOptions);
-}
 </script>
 
 <template>
-  <button @click="notify">Notify !</button>
-
   <n-loading-bar-provider>
     <n-message-provider>
       <n-notification-provider>

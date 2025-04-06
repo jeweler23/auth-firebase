@@ -2,7 +2,7 @@ import { ref,inject } from 'vue'
 import { defineStore } from 'pinia'
 import axios from 'axios'
 import { type CredentialsUser} from '@/types'
-import type { MessageApiInjection } from 'naive-ui'
+import { toast, type ToastOptions } from 'vue3-toastify';
 
 
 interface IUserDTO {
@@ -15,7 +15,6 @@ interface IUserDTO {
 
 
 export const useAuthStore = defineStore('auth', () => {
-  const message = inject<MessageApiInjection>('message')
 
   const userInfo = ref<IUserDTO>({
     token: null,
@@ -26,9 +25,7 @@ export const useAuthStore = defineStore('auth', () => {
   })
 
   const auth = async (payload:CredentialsUser,type:'signUp'|'signInWithPassword'): Promise<void> => {
-    message?.success(
-      'Cause you walked hand in hand With another man in my place'
-    )
+
     try{
       const response:IUserDTO = await axios.post(`https://identitytoolkit.googleapis.com/v1/accounts:${type}?key=${import.meta.env.VITE_API_KEY}`, {
         ...payload,
@@ -41,10 +38,16 @@ export const useAuthStore = defineStore('auth', () => {
         refreshToken: response.data.refreshToken,
         expiresIn: response.data.expiresIn,
       }
-
+      toast.success("Успех", {
+        autoClose: 1000,
+        position: toast.POSITION.BOTTOM_RIGHT,
+      } as ToastOptions);
       return userInfo.value
-    }catch(error){
-      console.log(error)
+    }catch {
+      toast.error("Неудачно", {
+        autoClose: 1000,
+        position: toast.POSITION.BOTTOM_RIGHT,
+      } as ToastOptions);
     }
   }
   return { auth,userInfo }
