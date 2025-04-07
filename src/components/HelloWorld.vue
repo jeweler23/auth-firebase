@@ -1,7 +1,14 @@
 <script setup lang="ts">
+import {onMounted} from "vue";
+import axios from "axios";
+
 defineProps<{
   msg: string
 }>()
+
+onMounted(async () => {
+  await axios.get(`https://vue-auth-b48ce-default-rtdb.firebaseio.com/players.json`)
+})
 </script>
 
 <template>

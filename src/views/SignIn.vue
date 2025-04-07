@@ -54,8 +54,10 @@ import {NInput,NFormItem,NButton,NCol,NRow,NForm,NIcon} from 'naive-ui'
 import {UserAvatar,Password} from '@vicons/carbon'
 import {type ModelType} from "@/types";
 import {useAuthStore} from "@/stores/auth.ts";
+import {useRouter} from "vue-router";
 
 const authStore = useAuthStore()
+const router = useRouter()
 
 const formRef = ref<FormInst | null>(null)
 const rPasswordFormItemRef = ref<FormItemInst | null>(null)
@@ -140,6 +142,7 @@ const  handleValidateButtonClick = async (e: MouseEvent)=> {
   const {email, password} = modelRef.value
  const user = await authStore.auth({ email, password },'signInWithPassword' )
   console.log(user)
+ if (user.token) router.push('/players')
 }
 
 </script>

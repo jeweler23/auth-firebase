@@ -22,6 +22,10 @@ const router = createRouter({
       path: '/players',
       name: 'players',
       component: () => import("@/views/HomeView.vue"),
+      meta: {
+        requiresAuth: true,
+        roles: ['auth']
+      }
     },
     {
      path: '/:pathMatch(.*)*', name: 'NotFound', component: SignUp ,
