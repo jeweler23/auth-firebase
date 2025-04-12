@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import SignUp  from "@/views/SignUp.vue";
 // import { useRouter, onBeforeRouteUpdate, onBeforeRouteLeave } from 'vue-router';
+import {useRouter} from "vue-router";
 
 // const routerVue = useRouter();
 
@@ -23,8 +24,7 @@ const router = createRouter({
       name: 'players',
       component: () => import("@/views/HomeView.vue"),
       meta: {
-        requiresAuth: true,
-        roles: ['auth']
+        auth: true,
       }
     },
     {
@@ -42,6 +42,13 @@ const router = createRouter({
 //   }
 // });
 
-
+router.beforeEach((to, from, next) => {
+  const authStore = useAuthStore();
+  if (to?.meta?.auth && !authStore.userInfo.token) {
+    next('/signin')
+    return;
+  }
+  next()
+})
 
 export default router
