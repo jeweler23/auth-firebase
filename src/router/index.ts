@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import SignUp  from "@/views/SignUp.vue";
 // import { useRouter, onBeforeRouteUpdate, onBeforeRouteLeave } from 'vue-router';
 import {useRouter} from "vue-router";
+import {useAuthStore} from "@/stores/auth.ts";
 
 // const routerVue = useRouter();
 
