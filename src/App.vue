@@ -3,8 +3,19 @@ import { RouterView } from 'vue-router'
 import {NMessageProvider,NDialogProvider,NModalProvider,NNotificationProvider,NLoadingBarProvider } from 'naive-ui'
 import AuthWrapper from "@/wrapper/AuthWrapper.vue";
 
+import {useAuthStore} from "@/stores/auth.ts";
+const auth = useAuthStore();
 
+const checkUser = ()=>{
+  const tokens = localStorage.getItem("firebaseToken");
+  if(tokens){
+    const {token,refreshToken} = JSON.parse(tokens);
+    auth.userInfo.token = token;
+    auth.userInfo.refreshToken = refreshToken;
+  }
+}
 
+checkUser()
 </script>
 
 <template>

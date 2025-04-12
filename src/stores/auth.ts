@@ -38,6 +38,11 @@ export const useAuthStore = defineStore('auth', () => {
         refreshToken: response.data.refreshToken,
         expiresIn: response.data.expiresIn,
       }
+
+      localStorage.setItem('firebaseToken', JSON.stringify({
+        token:userInfo.value.token,
+        refreshToken:userInfo.value.refreshToken,
+      }))
       toast.success("Успех", {
         autoClose: 1000,
         position: toast.POSITION.BOTTOM_RIGHT,
