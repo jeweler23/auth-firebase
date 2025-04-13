@@ -1,6 +1,5 @@
 import axios from "axios";
-import {useRouter} from "vue-router";
-
+import router from "@/router/index.ts";
 import {useAuthStore} from "@/stores/auth.ts";
 
 const axiosInstance = axios.create()
@@ -10,35 +9,42 @@ axiosInstance.interceptors.request.use((config)=>{
     return config;
   }
   const authStore = useAuthStore()
-  const params = new URLSearchParams()
-  params.append('auth',authStore.userInfo.token)
-  config.params = params
+  config.params = {
+    ...config.params,
+    auth: authStore.userInfo.token,
+  };
   return config;
 })
 
 axiosInstance.interceptors.response.use((res)=>{
 return res;
 }, async (error)=>{
-  const router = useRouter();
   const authStore = useAuthStore()
+  const originalRequest = error.config;
 
-  if (error.response.status === 401 && error.config._retry) {
-    error.config._retry = true;
+  if (error.response.status === 401 && !originalRequest._retry) {
+
+    originalRequest._retry = true;
     try {
-      const tokens = await axiosInstance.post(`https://securetpken.googleapis.com/v1/token?key=${import.meta.env.VITE_API_KEY}`,{
+      const tokens = await axiosInstance.post(`https://securetoken.googleapis.com/v1/token?key=${import.meta.env.VITE_API_KEY}`,{
         grant_type: "refresh_token",
         refresh_token: JSON.parse(localStorage.getItem("firebaseToken")).refreshToken,
       })
-authStore.userInfo.token = tokens.data.access_token
+      authStore.userInfo.token = tokens.data.access_token
       authStore.userInfo.refreshToken = tokens.data.refresh_token
       localStorage.setItem('firebaseToken', JSON.stringify({
         token:tokens.data.access_token,
         refreshToken:tokens.data.refresh_token,
       }))
+      originalRequest.params = {
+        ...originalRequest.params,
+        auth: authStore.userInfo.token,
+      };
+      return axiosInstance(originalRequest);
     } catch (e) {
       console.log(e)
       localStorage.removeItem('firebaseToken')
-      router.push('/signin')
+      await router.push('/signin')
       authStore.userInfo.token = ''
       authStore.userInfo.refreshToken = ''
     }
