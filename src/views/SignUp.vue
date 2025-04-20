@@ -1,5 +1,5 @@
 <template>
-<h1>SignUp</h1>
+<h1 >SignUp</h1>
 <n-form ref="formRef" :model="modelRef" :rules="rules">
 <n-form-item path="email" label="Email" >
   <n-icon size="32">

@@ -25,8 +25,8 @@ checkUser()
         <n-modal-provider>
           <n-dialog-provider>
             <router-view v-slot="{ Component }">
-              <AuthWrapper>
-                <component :is="Component" />
+              <AuthWrapper >
+                <component :is="Component"  />
               </AuthWrapper>
             </router-view>
           </n-dialog-provider>
