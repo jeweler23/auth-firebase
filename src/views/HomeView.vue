@@ -3,9 +3,6 @@ import { NButton } from 'naive-ui'
 import { motion } from "motion-v"
 import {onMounted, ref} from "vue";
 import axios from "axios";
-import {useAuthStore} from "@/stores/auth.ts";
-
-const auth = useAuthStore();
 
 const players = ref([])
 

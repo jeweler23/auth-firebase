@@ -73,102 +73,102 @@ const authStore = useAuthStore()
 const router = useRouter()
 
 const formRef = ref<FormInst | null>(null)
-    const rPasswordFormItemRef = ref<FormItemInst | null>(null)
-    const message = useMessage()
-    const modelRef = ref<ModelType>({
-      email: null,
-      password: null,
-      reenteredPassword: null
-    })
-    function validatePasswordStartWith(
-      rule: FormItemRule,
-      value: string
-    ): boolean {
-      return (
-        !!modelRef.value.password
+const rPasswordFormItemRef = ref<FormItemInst | null>(null)
+const message = useMessage()
+const modelRef = ref<ModelType>({
+  email: null,
+  password: null,
+  reenteredPassword: null
+})
+function validatePasswordStartWith(
+  rule: FormItemRule,
+  value: string
+): boolean {
+  return (
+    !!modelRef.value.password
         && modelRef.value.password.startsWith(value)
         && modelRef.value.password.length >= value.length
-      )
-    }
+  )
+}
 
-    function validatePasswordSame(rule: FormItemRule, value: string): boolean {
-      return value === modelRef.value.password
-    }
-    const rules: FormRules = {
-      email: [
-        {
-          required: true,
-          validator(rule: FormItemRule, value: string) {
-            if (!value) {
-              return new Error('Age is required')
-            }
-
-            else if (value.length < 5) {
-              return new Error('Email length should be above 5')
-            }
-            return true
-          },
-          trigger: ['input', 'blur']
+function validatePasswordSame(rule: FormItemRule, value: string): boolean {
+  return value === modelRef.value.password
+}
+const rules: FormRules = {
+  email: [
+    {
+      required: true,
+      validator(rule: FormItemRule, value: string) {
+        if (!value) {
+          return new Error('Age is required')
         }
-      ],
-      password: [
-        {
-          required: true,
-          validator(rule: FormItemRule, value: string) {
-            if (!value.length) {
-              return new Error('Password is required')
-            }
 
-            else if (value.length < 6) {
-              return new Error('Password length should be above 6')
-            }
-
-            if (modelRef.value.reenteredPassword) {
-              rPasswordFormItemRef.value?.validate({ trigger: 'password-input' })
-            }
-            return true
-          },
-          trigger: ['input', 'blur'],
+        else if (value.length < 5) {
+          return new Error('Email length should be above 5')
         }
-      ],
-      reenteredPassword: [
-        {
-          required: true,
-          message: 'Re-entered password is required',
-          trigger: ['input', 'blur']
-        },
-        {
-          validator: validatePasswordStartWith,
-          message: 'Password is not same as re-entered password!',
-          trigger: 'input'
-        },
-        {
-          validator: validatePasswordSame,
-          message: 'Password is not same as re-entered password!',
-          trigger: ['blur', 'password-input']
-        }
-      ]
+        return true
+      },
+      trigger: ['input', 'blur']
     }
+  ],
+  password: [
+    {
+      required: true,
+      validator(rule: FormItemRule, value: string) {
+        if (!value.length) {
+          return new Error('Password is required')
+        }
 
-    const  handleValidateButtonClick = async (e: MouseEvent)=> {
-        e.preventDefault()
-        formRef.value?.validate(
-          (errors: Array<FormValidationError> | undefined) => {
-            if (!errors) {
-              message.success('Valid')
-            }
-            else {
-              console.log(errors)
-              message.error('Invalid')
-            }
-          }
-        )
-        const {email, password} = modelRef.value
-       const user = await authStore.auth({ email, password },'signUp' )
-       if (user?.token) {
-        await router.push('/signin')
-       }
-       console.log(user)
+        else if (value.length < 6) {
+          return new Error('Password length should be above 6')
+        }
+
+        if (modelRef.value.reenteredPassword) {
+          rPasswordFormItemRef.value?.validate({ trigger: 'password-input' })
+        }
+        return true
+      },
+      trigger: ['input', 'blur'],
+    }
+  ],
+  reenteredPassword: [
+    {
+      required: true,
+      message: 'Re-entered password is required',
+      trigger: ['input', 'blur']
+    },
+    {
+      validator: validatePasswordStartWith,
+      message: 'Password is not same as re-entered password!',
+      trigger: 'input'
+    },
+    {
+      validator: validatePasswordSame,
+      message: 'Password is not same as re-entered password!',
+      trigger: ['blur', 'password-input']
+    }
+  ]
+}
+
+const  handleValidateButtonClick = async (e: MouseEvent)=> {
+  e.preventDefault()
+  formRef.value?.validate(
+    (errors: Array<FormValidationError> | undefined) => {
+      if (!errors) {
+        message.success('Valid')
       }
+      else {
+        console.log(errors)
+        message.error('Invalid')
+      }
+    }
+  )
+  const {email, password} = modelRef.value
+  const user = await authStore.auth({ email, password },'signUp' )
+  if (user?.token) {
+    await router.push('/signin')
+  }
+  console.log(user)
+}
 
 </script>

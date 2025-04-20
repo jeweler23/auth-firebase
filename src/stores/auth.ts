@@ -1,4 +1,4 @@
-import { ref,inject } from 'vue'
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import axios from 'axios'
 import { type CredentialsUser} from '@/types'
