@@ -1,13 +1,13 @@
 import {
   create,
-  NMessageProvider,
-  NNotificationProvider,
-  NDialogProvider,
-  NLoadingBarProvider,
   NButton,
+  NDialogProvider,
   NInput,
-  NModal
-} from 'naive-ui'
+  NLoadingBarProvider,
+  NMessageProvider,
+  NModal,
+  NNotificationProvider,
+} from 'naive-ui';
 
 export const naive = create({
   components: [
@@ -17,6 +17,6 @@ export const naive = create({
     NLoadingBarProvider,
     NButton,
     NInput,
-    NModal
-  ]
-})
+    NModal,
+  ],
+});

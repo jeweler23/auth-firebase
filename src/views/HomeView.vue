@@ -5,26 +5,26 @@ import {onMounted, ref} from "vue";
 import axiosInstance from "@/utils/axios-interseptors.ts";
 import {useAuthStore} from "@/stores/auth.ts";
 
-const auth = useAuthStore();
 
-const players = ref([])
+const players = ref([]);
 
 onMounted(async () => {
   const response = await axiosInstance.get(`https://vue-auth-b48ce-default-rtdb.firebaseio.com/players.json`)
   players.value = response?.data
 })
+
 </script>
 
 <template>
-  <main>
-    {{players}}
-    <n-button>naive-ui</n-button>
-    <motion.div
-      class="box"
-      :animate="{ rotate: 360 }"
-      :transition="{ duration: 1 }"
-    />
-  </main>
+	<main>
+		{{ players }}
+		<n-button>naive-ui</n-button>
+		<motion.div
+			class="box"
+			:animate="{ rotate: 360 }"
+			:transition="{ duration: 1 }"
+		/>
+	</main>
 </template>
 
 <style>
