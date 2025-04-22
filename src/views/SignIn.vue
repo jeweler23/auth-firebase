@@ -21,7 +21,7 @@
     </n-form-item>
 
     <n-row :gutter="[0, 24]">
-      <n-col :span="24">
+         <n-col :span="24">
         <div style="display: flex; justify-content: flex-end">
           <n-button
             :disabled="modelRef.age === null"
@@ -36,7 +36,7 @@
     </n-row>
   </n-form>
 
-  <pre>{{ JSON.stringify(modelRef, null, 2) }}
+     <pre>{{ JSON.stringify(modelRef, null, 2) }}
 </pre>
 </template>
 
