@@ -13,9 +13,10 @@ export default antfu({
       quotes: 'single',
       indent: 'tab',
       overrides: {
+        'no-console': 'off',
         'no-return-await': ['error'],
         'node/prefer-global/process': ['error', 'always'],
-        'style/indent': ['off'], // Сломано в .vue файлах
+        'style/indent': ['off'],
       },
     },
     typescript: true,
@@ -27,7 +28,6 @@ export default antfu({
     ],
     vue: {
       overrides: {
-        // Ваши правила ESLint
         'vue/attributes-order': ['error', {
           order: [
             'DEFINITION',
