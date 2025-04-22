@@ -1,18 +1,15 @@
 <script setup lang="ts">
-import { NButton } from 'naive-ui'
-import { motion } from "motion-v"
-import {onMounted, ref} from "vue";
-import axiosInstance from "@/utils/axios-interseptors.ts";
-import {useAuthStore} from "@/stores/auth.ts";
-
+import axiosInstance from '@/utils/axios-interseptors.ts';
+import { motion } from 'motion-v';
+import { NButton } from 'naive-ui';
+import { onMounted, ref } from 'vue';
 
 const players = ref([]);
 
 onMounted(async () => {
-  const response = await axiosInstance.get(`https://vue-auth-b48ce-default-rtdb.firebaseio.com/players.json`)
-  players.value = response?.data
-})
-
+  const response = await axiosInstance.get(`https://vue-auth-b48ce-default-rtdb.firebaseio.com/players.json`);
+  players.value = response?.data;
+});
 </script>
 
 <template>

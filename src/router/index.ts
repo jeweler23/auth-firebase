@@ -33,7 +33,6 @@ component: SignUp,
   ],
 });
 
-
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
   if (to?.meta?.auth && !authStore.userInfo.token) {

@@ -1,11 +1,10 @@
-import axiosInstance from "@/utils/axios-interseptors.ts";
-
 import type { CredentialsUser } from '@/types';
+
 import type { ToastOptions } from 'vue3-toastify';
+import axiosInstance from '@/utils/axios-interseptors.ts';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { toast } from 'vue3-toastify';
-
 
 interface IUserDTO {
   token: string;
@@ -24,10 +23,9 @@ export const useAuthStore = defineStore('auth', () => {
     expiresIn: null,
   });
 
-  const auth = async (payload:CredentialsUser,type:'signUp'|'signInWithPassword'): Promise<void> => {
-
-    try{
-      const response:IUserDTO = await axiosInstance.post(`https://identitytoolkit.googleapis.com/v1/accounts:${type}?key=${import.meta.env.VITE_API_KEY}`, {
+  const auth = async (payload: CredentialsUser, type: 'signUp' | 'signInWithPassword'): Promise<void> => {
+    try {
+      const response: IUserDTO = await axiosInstance.post(`https://identitytoolkit.googleapis.com/v1/accounts:${type}?key=${import.meta.env.VITE_API_KEY}`, {
         ...payload,
         returnSecureToken: true,
       });
