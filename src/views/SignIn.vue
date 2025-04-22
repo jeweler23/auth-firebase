@@ -140,9 +140,9 @@ const  handleValidateButtonClick = async (e: MouseEvent)=> {
     }
   )
   const {email, password} = modelRef.value
- const user = await authStore.auth({ email, password },'signInWithPassword' )
+  const user = await authStore.auth({ email, password },'signInWithPassword' )
   console.log(user)
- if (user.token) router.push('/players')
+  if (user.token) router.push('/players')
 }
 
 </script>

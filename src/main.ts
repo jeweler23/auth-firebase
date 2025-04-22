@@ -2,7 +2,7 @@ import './assets/main.css'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-import Vue3Toastify, { type ToastContainerOptions } from 'vue3-toastify';
+import Vue3Toastify from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 import '@/utils/axios-interseptors.ts'
 

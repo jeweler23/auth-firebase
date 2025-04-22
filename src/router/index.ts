@@ -1,9 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import SignUp  from "@/views/SignUp.vue";
 // import { useRouter, onBeforeRouteUpdate, onBeforeRouteLeave } from 'vue-router';
-import {useRouter} from "vue-router";
+import {useAuthStore} from "@/stores/auth.ts";
 
-// const routerVue = useRouter();
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -28,9 +27,9 @@ const router = createRouter({
       }
     },
     {
-     path: '/:pathMatch(.*)*', name: 'NotFound', component: SignUp ,
+      path: '/:pathMatch(.*)*', name: 'NotFound', component: SignUp ,
 
-}
+    }
   ],
 })
 
