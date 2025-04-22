@@ -1,9 +1,9 @@
 name: mr check
 
 on:
-  push:
-    branches:
-      - "**"
+#  push:
+#    branches:
+#      - "**"
   pull_request:
     branches:
       - main

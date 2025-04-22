@@ -1,7 +1,6 @@
-import { createDiscreteApi } from 'naive-ui'
+import { createDiscreteApi } from 'naive-ui';
 
-
-const { message } = createDiscreteApi(['message'])
+const { message } = createDiscreteApi(['message']);
 
 // Экспортируем нужные экземпляры
-export { message }
+export { message };

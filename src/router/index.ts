@@ -1,8 +1,7 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import SignUp  from "@/views/SignUp.vue";
 // import { useRouter, onBeforeRouteUpdate, onBeforeRouteLeave } from 'vue-router';
-import {useAuthStore} from "@/stores/auth.ts";
-
+import { useAuthStore } from '@/stores/auth.ts';
+import SignUp from '@/views/SignUp.vue';
+import { createRouter, createWebHistory } from 'vue-router';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,22 +15,24 @@ const router = createRouter({
     {
       path: '/signin',
       name: 'signin',
-      component: () => import("@/views/SignIn.vue"),
+      component: () => import('@/views/SignIn.vue'),
     },
     {
       path: '/players',
       name: 'players',
-      component: () => import("@/views/HomeView.vue"),
+      component: () => import('@/views/HomeView.vue'),
       meta: {
         auth: true,
-      }
+      },
     },
     {
-      path: '/:pathMatch(.*)*', name: 'NotFound', component: SignUp ,
+      path: '/:pathMatch(.*)*',
+name: 'NotFound',
+component: SignUp,
 
-    }
+    },
   ],
-})
+});
 
 // onBeforeRouteUpdate((to, from, next) => {
 //   if (!routerVue.hasRoute(to.name)) {
@@ -44,10 +45,10 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
   if (to?.meta?.auth && !authStore.userInfo.token) {
-    next('/signin')
+    next('/signin');
     return;
   }
-  next()
-})
+  next();
+});
 
-export default router
+export default router;
