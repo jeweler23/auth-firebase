@@ -19,11 +19,11 @@ axiosInstance.interceptors.request.use((config) => {
 axiosInstance.interceptors.response.use((res) => {
 return res;
 }, async (error) => {
-  const authStore = useAuthStore();
   const originalRequest = error.config;
 
   if (error.response.status === 401 && !originalRequest._retry) {
     originalRequest._retry = true;
+    const authStore = useAuthStore();
     try {
       const tokens = await axiosInstance.post(`https://securetoken.googleapis.com/v1/token?key=${import.meta.env.VITE_API_KEY}`, {
         grant_type: 'refresh_token',
