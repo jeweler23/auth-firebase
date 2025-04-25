@@ -29,7 +29,7 @@ export const useAuthStore = defineStore('auth', () => {
     expiresIn: '',
   });
 
-  const auth = async (payload: CredentialsUser, type: 'signUp' | 'signInWithPassword'): Promise<IUserDTO> => {
+  const auth = async (payload: CredentialsUser, type: 'signUp' | 'signInWithPassword'): Promise<IUserDTO | undefined> => {
     try {
       const { data } = await axiosInstance.post<IUserResponseDTO>(`https://identitytoolkit.googleapis.com/v1/accounts:${type}?key=${import.meta.env.VITE_API_KEY}`, {
         ...payload,

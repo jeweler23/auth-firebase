@@ -5,7 +5,7 @@ import axios from 'axios';
 const axiosInstance = axios.create();
 
 axiosInstance.interceptors.request.use((config) => {
-  if (config.url.includes('signUp') || config.url.includes('signInWithPassword')) {
+  if (config.url?.includes('signUp') || config.url?.includes('signInWithPassword')) {
     return config;
   }
   const authStore = useAuthStore();
@@ -25,9 +25,11 @@ return res;
     originalRequest._retry = true;
     const authStore = useAuthStore();
     try {
+      const tokenString = localStorage.getItem('firebaseToken');
+
       const tokens = await axiosInstance.post(`https://securetoken.googleapis.com/v1/token?key=${import.meta.env.VITE_API_KEY}`, {
         grant_type: 'refresh_token',
-        refresh_token: JSON.parse(localStorage.getItem('firebaseToken')).refreshToken,
+        refresh_token: tokenString ? JSON.parse(tokenString)?.refreshToken : null,
       });
       authStore.userInfo.token = tokens.data.access_token;
       authStore.userInfo.refreshToken = tokens.data.refresh_token;
