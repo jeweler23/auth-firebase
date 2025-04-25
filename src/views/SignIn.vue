@@ -44,7 +44,6 @@
 import type { CredentialsUser } from '@/types';
 import type {
   FormInst,
-  FormItemInst,
   FormItemRule,
   FormRules,
   FormValidationError,
@@ -59,25 +58,12 @@ const authStore = useAuthStore();
 const router = useRouter();
 
 const formRef = ref<FormInst | null>(null);
-const rPasswordFormItemRef = ref<FormItemInst | null>(null);
 const message = useMessage();
 const modelRef = ref<CredentialsUser>({
   email: null,
   password: null,
 });
-function validatePasswordStartWith(
-  rule: FormItemRule,
-  value: string,
-): boolean {
-  return (
-    !!modelRef.value.password
-    && modelRef.value.password.startsWith(value)
-    && modelRef.value.password.length >= value.length
-  );
-}
-function validatePasswordSame(rule: FormItemRule, value: string): boolean {
-  return value === modelRef.value.password;
-}
+
 const rules: FormRules = {
   email: [
     {
