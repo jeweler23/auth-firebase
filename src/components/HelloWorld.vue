@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import axios from 'axios';
+import axiosInstance from '@/utils/axios-interseptors.ts';
 import { onMounted } from 'vue';
 
 defineProps<{
@@ -7,7 +7,7 @@ defineProps<{
 }>();
 
 onMounted(async () => {
-  await axios.get(`https://vue-auth-b48ce-default-rtdb.firebaseio.com/players.json`);
+  await axiosInstance.get(`https://vue-auth-b48ce-default-rtdb.firebaseio.com/players.json`);
 });
 </script>
 

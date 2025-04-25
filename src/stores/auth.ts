@@ -1,6 +1,7 @@
 import type { CredentialsUser } from '@/types';
+
 import type { ToastOptions } from 'vue3-toastify';
-import axios from 'axios';
+import axiosInstance from '@/utils/axios-interseptors.ts';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { toast } from 'vue3-toastify';
@@ -13,27 +14,33 @@ interface IUserDTO {
   expiresIn: string;
 }
 
+interface IUserResponseDTO extends IUserDTO {
+  idToken: string;
+  localId: string;
+
+}
+
 export const useAuthStore = defineStore('auth', () => {
   const userInfo = ref<IUserDTO>({
-    token: null,
-    email: null,
-    userId: null,
-    refreshToken: null,
-    expiresIn: null,
+    token: '',
+    email: '',
+    userId: '',
+    refreshToken: '',
+    expiresIn: '',
   });
 
-  const auth = async (payload: CredentialsUser, type: 'signUp' | 'signInWithPassword'): Promise<void> => {
+  const auth = async (payload: CredentialsUser, type: 'signUp' | 'signInWithPassword'): Promise<IUserDTO | undefined> => {
     try {
-      const response: IUserDTO = await axios.post(`https://identitytoolkit.googleapis.com/v1/accounts:${type}?key=${import.meta.env.VITE_API_KEY}`, {
+      const { data } = await axiosInstance.post<IUserResponseDTO>(`https://identitytoolkit.googleapis.com/v1/accounts:${type}?key=${import.meta.env.VITE_API_KEY}`, {
         ...payload,
         returnSecureToken: true,
       });
       userInfo.value = {
-        token: response.data.idToken,
-        email: response.data.email,
-        userId: response.data.localId,
-        refreshToken: response.data.refreshToken,
-        expiresIn: response.data.expiresIn,
+        token: data.idToken,
+        email: data.email,
+        userId: data.localId,
+        refreshToken: data.refreshToken,
+        expiresIn: data.expiresIn,
       };
 
       localStorage.setItem('firebaseToken', JSON.stringify({

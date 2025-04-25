@@ -37,7 +37,7 @@
 			<n-col :span="24">
 				<div style="display: flex; justify-content: flex-end">
 					<n-button
-						:disabled="modelRef.age === null"
+						:disabled="!modelRef.password && !modelRef.reenteredPassword && !modelRef.email"
 						round
 						type="primary"
 						@click="handleValidateButtonClick"

@@ -15,7 +15,7 @@
 			<n-input
 				v-model:value="modelRef.password"
 				type="password"
-				@input="handlePasswordInput"
+
 				@keydown.enter.prevent
 			/>
 		</n-form-item>
@@ -24,7 +24,7 @@
 			<n-col :span="24">
 				<div style="display: flex; justify-content: flex-end">
 					<n-button
-						:disabled="modelRef.age === null"
+						:disabled="!modelRef.email || !modelRef.password"
 						round
 						type="primary"
 						@click="handleValidateButtonClick"
@@ -41,10 +41,9 @@
 </template>
 
 <script lang="ts" setup>
-import type { ModelType } from '@/types';
+import type { CredentialsUser } from '@/types';
 import type {
   FormInst,
-  FormItemInst,
   FormItemRule,
   FormRules,
   FormValidationError,
@@ -59,25 +58,12 @@ const authStore = useAuthStore();
 const router = useRouter();
 
 const formRef = ref<FormInst | null>(null);
-const rPasswordFormItemRef = ref<FormItemInst | null>(null);
 const message = useMessage();
-const modelRef = ref<ModelType>({
+const modelRef = ref<CredentialsUser>({
   email: null,
   password: null,
 });
-function validatePasswordStartWith(
-  rule: FormItemRule,
-  value: string,
-): boolean {
-  return (
-    !!modelRef.value.password
-    && modelRef.value.password.startsWith(value)
-    && modelRef.value.password.length >= value.length
-  );
-}
-function validatePasswordSame(rule: FormItemRule, value: string): boolean {
-  return value === modelRef.value.password;
-}
+
 const rules: FormRules = {
   email: [
     {
@@ -101,30 +87,8 @@ const rules: FormRules = {
       message: 'Password is required',
     },
   ],
-  reenteredPassword: [
-    {
-      required: true,
-      message: 'Re-entered password is required',
-      trigger: ['input', 'blur'],
-    },
-    {
-      validator: validatePasswordStartWith,
-      message: 'Password is not same as re-entered password!',
-      trigger: 'input',
-    },
-    {
-      validator: validatePasswordSame,
-      message: 'Password is not same as re-entered password!',
-      trigger: ['blur', 'password-input'],
-    },
-  ],
 };
 
-function handlePasswordInput() {
-  if (modelRef.value.reenteredPassword) {
-    rPasswordFormItemRef.value?.validate({ trigger: 'password-input' });
-  }
-}
 async function handleValidateButtonClick(e: MouseEvent) {
   e.preventDefault();
   formRef.value?.validate(
@@ -141,7 +105,7 @@ async function handleValidateButtonClick(e: MouseEvent) {
   const { email, password } = modelRef.value;
   const user = await authStore.auth({ email, password }, 'signInWithPassword');
   console.log(user);
-  if (user.token)
-router.push('/players');
-}
+  if (user?.token)
+    await router.push('/players');
+  }
 </script>

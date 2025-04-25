@@ -1,4 +1,3 @@
-// import { useRouter, onBeforeRouteUpdate, onBeforeRouteLeave } from 'vue-router';
 import { useAuthStore } from '@/stores/auth.ts';
 import SignUp from '@/views/SignUp.vue';
 import { createRouter, createWebHistory } from 'vue-router';
@@ -33,14 +32,6 @@ component: SignUp,
     },
   ],
 });
-
-// onBeforeRouteUpdate((to, from, next) => {
-//   if (!routerVue.hasRoute(to.name)) {
-//     next({ name: 'NotFound' });
-//   } else {
-//     next();
-//   }
-// });
 
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
