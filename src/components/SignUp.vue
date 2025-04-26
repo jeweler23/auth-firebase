@@ -1,14 +1,13 @@
 <template>
-	<h1>SignUp</h1>
 	<n-form ref="formRef" :model="modelRef" :rules="rules">
 		<n-form-item path="email" label="Email">
-			<n-icon size="32">
+			<n-icon size="24">
 				<user-avatar />
 			</n-icon>
 			<n-input v-model:value="modelRef.email" @keydown.enter.prevent />
 		</n-form-item>
 		<n-form-item path="password" label="Password">
-			<n-icon size="32">
+			<n-icon size="24">
 				<password />
 			</n-icon>
 			<n-input
@@ -23,7 +22,7 @@
 			path="reenteredPassword"
 			label="Re-enter Password"
 		>
-			<n-icon size="32">
+			<n-icon size="24">
 				<password />
 			</n-icon>
 			<n-input
@@ -33,24 +32,16 @@
 				@keydown.enter.prevent
 			/>
 		</n-form-item>
-		<n-row :gutter="[0, 24]">
-			<n-col :span="24">
-				<div style="display: flex; justify-content: flex-end">
-					<n-button
-						:disabled="!modelRef.password && !modelRef.reenteredPassword && !modelRef.email"
-						round
-						type="primary"
-						@click="handleValidateButtonClick"
-					>
-						SignUp
-					</n-button>
-				</div>
-			</n-col>
-		</n-row>
 	</n-form>
-
-	<pre>{{ JSON.stringify(modelRef, null, 2) }}
-</pre>
+	<n-button
+		:disabled="!modelRef.password && !modelRef.reenteredPassword && !modelRef.email"
+		round
+		block secondary strong
+		type="primary"
+		@click.prevent="handleValidateButtonClick"
+	>
+		SignUp
+	</n-button>
 </template>
 
 <script lang="ts" setup>
@@ -64,7 +55,7 @@ import type {
 } from 'naive-ui';
 import { useAuthStore } from '@/stores/auth.ts';
 import { Password, UserAvatar } from '@vicons/carbon';
-import { NButton, NCol, NForm, NFormItem, NIcon, NInput, NRow, useMessage } from 'naive-ui';
+import { NButton, NForm, NFormItem, NIcon, NInput, useMessage } from 'naive-ui';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -96,10 +87,9 @@ function validatePasswordSame(rule: FormItemRule, value: string): boolean {
 const rules: FormRules = {
   email: [
     {
-      required: true,
       validator(rule: FormItemRule, value: string) {
         if (!value) {
-          return new Error('Age is required');
+          return new Error('Email is required');
         }
 
         else if (value.length < 5) {
@@ -112,7 +102,6 @@ const rules: FormRules = {
   ],
   password: [
     {
-      required: true,
       validator(rule: FormItemRule, value: string) {
         if (!value.length) {
           return new Error('Password is required');
@@ -132,7 +121,6 @@ const rules: FormRules = {
   ],
   reenteredPassword: [
     {
-      required: true,
       message: 'Re-entered password is required',
       trigger: ['input', 'blur'],
     },
@@ -149,8 +137,7 @@ const rules: FormRules = {
   ],
 };
 
-async function handleValidateButtonClick(e: MouseEvent) {
-  e.preventDefault();
+async function handleValidateButtonClick() {
   formRef.value?.validate(
     (errors: Array<FormValidationError> | undefined) => {
       if (!errors) {
@@ -165,8 +152,7 @@ async function handleValidateButtonClick(e: MouseEvent) {
   const { email, password } = modelRef.value;
   const user = await authStore.auth({ email, password }, 'signUp');
   if (user?.token) {
-    await router.push('/signin');
+    await router.push('/players');
   }
-  console.log(user);
 }
 </script>

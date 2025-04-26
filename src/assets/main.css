@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+html, body {
+  height: 100%;
+}
+
+#app {
+  @apply h-full w-full;
+}
+
+@theme {
+  --main-bg: rgba(24, 24, 28,0.9);
+
+}
+
+.dark{
+  @apply dark:bg-(--main-bg) ;
+
+}

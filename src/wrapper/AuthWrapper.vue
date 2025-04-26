@@ -1,12 +1,5 @@
 <template>
-	<slot />
+	<div class="w-xl h-full flex justify-center items-center">
+		<slot />
+	</div>
 </template>
-
-<script setup lang="ts">
-import { useMessage } from 'naive-ui';
-
-import { provide } from 'vue';
-
-const message = useMessage();
-provide('message', message);
-</script>

@@ -1,5 +1,4 @@
-import { useAuthStore } from '@/stores/auth.ts';
-import SignUp from '@/views/SignUp.vue';
+import AuthMain from '@/views/AuthMain.vue';
 import { createRouter, createWebHistory } from 'vue-router';
 
 const router = createRouter({
@@ -7,14 +6,11 @@ const router = createRouter({
   routes: [
 
     {
-      path: '/signup',
-      name: 'signup',
-      component: SignUp,
-    },
-    {
-      path: '/signin',
-      name: 'signin',
-      component: () => import('@/views/SignIn.vue'),
+      path: '/auth',
+      props: route => ({ authType: route.query.authType }),
+
+      name: 'auth',
+      component: AuthMain,
     },
     {
       path: '/players',
@@ -26,20 +22,23 @@ const router = createRouter({
     },
     {
       path: '/:pathMatch(.*)*',
-name: 'NotFound',
-component: SignUp,
-
+      name: 'NotFound',
+      component: AuthMain,
     },
   ],
 });
 
-router.beforeEach((to, from, next) => {
-  const authStore = useAuthStore();
-  if (to?.meta?.auth && !authStore.userInfo.token) {
-    next('/signin');
-    return;
-  }
-  next();
-});
+// router.beforeEach((to, from, next) => {
+//   const authStore = useAuthStore();
+//   if (to?.meta?.auth && !authStore.userInfo.token) {
+//     return next({
+//       path: '/auth',
+//       query: {
+//         authType: 'signUp',
+//       },
+//     });
+//   };
+//   next();
+// });
 
 export default router;

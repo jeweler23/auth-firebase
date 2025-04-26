@@ -46,7 +46,12 @@ return res;
  catch (e) {
       console.log(e);
       localStorage.removeItem('firebaseToken');
-      await router.push('/signin');
+      await router.push({
+        path: '/auth',
+        query: {
+          authType: 'signIn',
+        },
+      });
       authStore.userInfo.token = '';
       authStore.userInfo.refreshToken = '';
     }

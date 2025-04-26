@@ -1,15 +1,13 @@
 <template>
-	<h1>SignIn</h1>
-
 	<n-form ref="formRef" :model="modelRef" :rules="rules">
 		<n-form-item path="email" label="Email">
-			<n-icon size="32">
+			<n-icon size="24">
 				<user-avatar />
 			</n-icon>
 			<n-input v-model:value="modelRef.email" @keydown.enter.prevent />
 		</n-form-item>
 		<n-form-item path="password" label="Password">
-			<n-icon size="32">
+			<n-icon size="24">
 				<password />
 			</n-icon>
 			<n-input
@@ -20,24 +18,16 @@
 			/>
 		</n-form-item>
 
-		<n-row :gutter="[0, 24]">
-			<n-col :span="24">
-				<div style="display: flex; justify-content: flex-end">
-					<n-button
-						:disabled="!modelRef.email || !modelRef.password"
-						round
-						type="primary"
-						@click="handleValidateButtonClick"
-					>
-						SignIn
-					</n-button>
-				</div>
-			</n-col>
-		</n-row>
-	</n-form>
+		<n-button
+			:disabled="!modelRef.email || !modelRef.password"
+			round block secondary strong
 
-	<pre>{{ JSON.stringify(modelRef, null, 2) }}
-</pre>
+			type="primary"
+			@click="handleValidateButtonClick"
+		>
+			SignIn
+		</n-button>
+	</n-form>
 </template>
 
 <script lang="ts" setup>
@@ -50,7 +40,7 @@ import type {
 } from 'naive-ui';
 import { useAuthStore } from '@/stores/auth.ts';
 import { Password, UserAvatar } from '@vicons/carbon';
-import { NButton, NCol, NForm, NFormItem, NIcon, NInput, NRow, useMessage } from 'naive-ui';
+import { NButton, NForm, NFormItem, NIcon, NInput, useMessage } from 'naive-ui';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -67,7 +57,7 @@ const modelRef = ref<CredentialsUser>({
 const rules: FormRules = {
   email: [
     {
-      required: true,
+
       validator(rule: FormItemRule, value: string) {
         if (!value) {
           return new Error('Age is required');
@@ -83,7 +73,7 @@ const rules: FormRules = {
   ],
   password: [
     {
-      required: true,
+
       message: 'Password is required',
     },
   ],
@@ -104,8 +94,7 @@ async function handleValidateButtonClick(e: MouseEvent) {
   );
   const { email, password } = modelRef.value;
   const user = await authStore.auth({ email, password }, 'signInWithPassword');
-  console.log(user);
   if (user?.token)
     await router.push('/players');
-  }
+}
 </script>
