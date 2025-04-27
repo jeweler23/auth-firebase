@@ -53,10 +53,12 @@ import type {
   FormRules,
   FormValidationError,
 } from 'naive-ui';
+import type { ToastOptions } from 'vue3-toastify';
 import { useAuthStore } from '@/stores/auth.ts';
 import { Password, UserAvatar } from '@vicons/carbon';
-import { NButton, NForm, NFormItem, NIcon, NInput, useMessage } from 'naive-ui';
+import { NButton, NForm, NFormItem, NIcon, NInput } from 'naive-ui';
 import { ref } from 'vue';
+import { toast } from 'vue3-toastify';
 import { useRouter } from 'vue-router';
 
 const authStore = useAuthStore();
@@ -64,7 +66,7 @@ const router = useRouter();
 
 const formRef = ref<FormInst | null>(null);
 const rPasswordFormItemRef = ref<FormItemInst | null>(null);
-const message = useMessage();
+
 const modelRef = ref<ModelType>({
   email: null,
   password: null,
@@ -141,11 +143,16 @@ async function handleValidateButtonClick() {
   formRef.value?.validate(
     (errors: Array<FormValidationError> | undefined) => {
       if (!errors) {
-        message.success('Valid');
+        toast.success('Успех', {
+          autoClose: 1000,
+          position: toast.POSITION.BOTTOM_RIGHT,
+        } as ToastOptions);
       }
       else {
-        console.log(errors);
-        message.error('Invalid');
+        toast.error('Ошибка', {
+          autoClose: 1000,
+          position: toast.POSITION.BOTTOM_RIGHT,
+        } as ToastOptions);
       }
     },
   );

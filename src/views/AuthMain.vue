@@ -21,5 +21,5 @@ import SignIn from '@/components/SignIn.vue';
 import SignUp from '@/components/SignUp.vue';
 import { NCard, NTabPane, NTabs } from 'naive-ui';
 
-const { authType = 'signin' } = defineProps<{ authType: string }>();
+const { authType = 'signin' } = defineProps<{ authType?: string }>();
 </script>
